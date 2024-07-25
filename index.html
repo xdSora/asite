@@ -1,12 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible">
-    <title>test</title>
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-  </body>
+    <title>TFD Calculator</title>
+    <script>
+       function calculate() {
+            let skill_power = parseFloat(document.getElementById('skill_power').value);
+            let base_boost = parseFloat(document.getElementById('base_boost').value);
+            let element_boost = parseFloat(document.getElementById('element_boost').value);
+            let type_boost = parseFloat(document.getElementById('type_boost').value);
+            let skill_modifier = parseFloat(document.getElementById('skill_modifier').value);
+            let critdmg_modifier = parseFloat(document.getElementById('crit_multiplier').value);
+
+            let damage = ((((skill_power * (1 + base_boost)) * (1 + element_boost)) * (1 + type_boost)) * (skill_modifier/100)) * 1.061; 
+            let crit_damage = damage * critdmg_modifier;
+
+            document.getElementById('result').innerText = 'Damage: ' + damage.toLocaleString();
+            document.getElementById('crit_result').innerText = 'Crit Damage: ' + crit_damage.toLocaleString();
+        }
+    </script>
+</head>
+<body>
+    <div class="legend">
+        <p>Notes:</p>
+        <ul>
+            <li><strong>Element Boost Ratio:</strong> Electric, Toxic, etc...</li>
+            <li><strong>Type Boost Ratio:</strong> Singular, Dimension, etc...</li>
+            <li><strong>Skill Power Modifier:</strong> Copy from particular skill description</li>
+        </ul>
+    </div>
+
+    <form onsubmit="event.preventDefault(); calculate();">
+        <h2 id="result">Damage: </h2> 
+        <h2 id="crit_result">Crit Damage: </h2>
+        <div class="form-group">
+            <label for="skill_power">Skill Power</label>
+            <input type="float" id="skill_power" required>
+        </div>
+        <div class="form-group">
+            <label for="base_boost">Base Boost Ratio</label>
+            <input type="float" id="base_boost" required>
+            <span class="input-addon">x</span>
+        </div>
+        <div class="form-group">
+            <label for="element_boost">Element Boost Ratio</label>
+            <input type="float" id="element_boost" required>
+            <span class="input-addon">x</span>
+        </div>
+        <div class="form-group">
+            <label for="type_boost">Type Boost Ratio</label>
+            <input type="float" id="type_boost" required>
+            <span class="input-addon">x</span>
+        </div>
+        <div class="form-group">
+            <label for="skill_modifier">Skill Power Modifier</label>
+            <input type="float" id="skill_modifier" required>
+            <span class="input-addon">%</span>
+        </div>
+        <div class="form-group">
+            <label for="crit_multiplier">Crit Damage Multiplier</label>
+            <input type="float" id="crit_multiplier" required>
+            <span class="input-addon">x</span>
+        </div> 
+        <button type="submit">Calculate</button>
+    </form>
+</body>
 </html>
+
+
+<!-- SPBR = skill power boost ratio
+
+(((skill power * base SPBR) * element SPBR) * dimension SPBR) * skill power modifier -->
